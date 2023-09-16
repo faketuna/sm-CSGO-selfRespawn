@@ -7,10 +7,14 @@
 #define PLUGIN_VERSION "0.0.1"
 
 ConVar g_cSelfRespawnEnabled;
+ConVar g_cAutoRespawnEnabled;
 ConVar g_cRepeatKillDetectionTime;
+ConVar g_cAutoRespawnTime;
 
 bool g_bSelfRespawnEnabled;
+bool g_bAutoRespawnEnabled;
 float g_fRepeatKillDetectionTime;
+float g_fAutoRespawnTime;
 
 float g_cLastRespawnTime[MAXPLAYERS+1];
 bool g_bRepeatKillDetected;
@@ -27,10 +31,14 @@ public Plugin myinfo =
 public void OnPluginStart()
 {
     g_cSelfRespawnEnabled             = CreateConVar("sm_self_respawn", "0.0", "Toggles self respawn", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_cAutoRespawnEnabled             = CreateConVar("sm_auto_respawn", "0.0", "Toggles auto respawn", FCVAR_NOTIFY, true, 0.0, true, 1.0);
     g_cRepeatKillDetectionTime        = CreateConVar("sr_repeat_kill_time", "1.6", "If player died within this time after respawn automatically disable self respawn", FCVAR_NONE, true, 0.0, true, 10.0);
+    g_cAutoRespawnTime                = CreateConVar("sr_auto_respawn_time", "2.0", "Respawn player after x seconds when player died", FCVAR_NONE, true, 0.0, true, 10.0);
 
     g_cSelfRespawnEnabled.AddChangeHook(OnCvarsChanged);
     g_cRepeatKillDetectionTime.AddChangeHook(OnCvarsChanged);
+    g_cAutoRespawnEnabled.AddChangeHook(OnCvarsChanged);
+    g_cAutoRespawnTime.AddChangeHook(OnCvarsChanged);
 
     RegConsoleCmd("sm_r", Command_SelfRespawn, "respawn command");
 
@@ -46,7 +54,9 @@ public void OnPluginStart()
 
 public void SyncConVarValues() {
     g_bSelfRespawnEnabled             = GetConVarBool(g_cSelfRespawnEnabled);
+    g_bAutoRespawnEnabled             = GetConVarBool(g_cAutoRespawnEnabled);
     g_fRepeatKillDetectionTime        = GetConVarFloat(g_cRepeatKillDetectionTime);
+    g_fAutoRespawnTime                = GetConVarFloat(g_cAutoRespawnTime);
 }
 
 public void OnCvarsChanged(ConVar convar, const char[] oldValue, const char[] newValue) {
@@ -86,7 +96,16 @@ public void OnPlayerDeath(Handle event, const char[] name, bool dontBroadcast) {
     if((current - g_cLastRespawnTime[client]) <= g_fRepeatKillDetectionTime) {
         CPrintToChatAll("%t%t", "prefix", "repeat kill detected");
         g_bRepeatKillDetected = true;
+        return;
     }
+    if(g_bAutoRespawnEnabled) {
+        CreateTimer(g_fAutoRespawnTime, PlayerRespawnTimer, client);
+    }
+}
+
+public Action PlayerRespawnTimer(Handle timer, int client) {
+    CS_RespawnPlayer(client);
+    return Plugin_Handled;
 }
 
 public Action Command_ResetState(int client, int args) {
