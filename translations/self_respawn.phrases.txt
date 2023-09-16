@@ -1,0 +1,43 @@
+"Phrases"
+{
+    "prefix"
+    {
+        "en"        "{purple}[Respawn] {default}"
+        "jp"        "{purple}[Respawn] {default}"
+    }
+    "disabled"
+    {
+        "en"        "This command is currently {darkred}disabled"
+        "jp"        "このコマンドは現在{darkred}無効化{default}されています"
+    }
+    "spectator"
+    {
+        "en"        "Cannot use this command in spectator!"
+        "jp"        "このコマンドは観戦者では使用できません!"
+    }
+    "alive"
+    {
+        "en"        "You are still alive!"
+        "jp"        "あなたはまだ生きています!"
+    }
+    "respawn"
+    {
+        "en"        "You have been revived!"
+        "jp"        "あなたは蘇生されました!"
+    }
+    "repeat kill detected"
+    {
+        "en"        "Repeat kill detected. Respawn {darkred}disabled{default} in this round"
+        "jp"        "連続キルが検出されました。このラウンドのリスポーンは{darkred}無効化{default}されました"
+    }
+    "repeat kill reset"
+    {
+        "en"        "Respawn has been enabled by Admin"
+        "jp"        "管理者がリスポーンを有効化しました"
+    }
+    "repeat kill not detected"
+    {
+        "en"        "Respawn kill is not detected"
+        "jp"        "リスポーンキルは検出されていません"
+    }
+}
