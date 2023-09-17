@@ -104,7 +104,10 @@ public void OnPlayerDeath(Handle event, const char[] name, bool dontBroadcast) {
 }
 
 public Action PlayerRespawnTimer(Handle timer, int client) {
-    CS_RespawnPlayer(client);
+    if(!IsPlayerAlive(client)) {
+        CS_RespawnPlayer(client);
+        g_cLastRespawnTime[client] = GetGameTime();
+    }
     return Plugin_Handled;
 }
 
