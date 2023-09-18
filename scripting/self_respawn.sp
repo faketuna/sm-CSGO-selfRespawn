@@ -80,6 +80,12 @@ public void OnPlayerDeath(Handle event, const char[] name, bool dontBroadcast) {
     }
 
     int client = GetClientOfUserId(GetEventInt(event, "userid"));
+    int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+
+    // Check attacker is world
+    if(attacker != 0) {
+        return;
+    }
 
     if(IsFakeClient(client)) {
         return;
