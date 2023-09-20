@@ -65,7 +65,7 @@ public void OnCvarsChanged(ConVar convar, const char[] oldValue, const char[] ne
 
 public void OnRoundStart(Handle event, const char[] name, bool dontBroadcast) {
     g_bRepeatKillDetected = false;
-    for(int i = 1; i >= MaxClients; i++) {
+    for(int i = 1; i <= MaxClients; i++) {
         g_cLastRespawnTime[i] = GetGameTime();
     }
 }
